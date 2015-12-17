@@ -36,7 +36,7 @@ my $tmp = '/tmp';
 my ($plugin_root, $noimg, $division, $quiet, $pan);
 my $host = 'http://www.ensemblgenomes.org';
 
-$divison = 'plants';
+$division = 'plants';
 
 GetOptions(
   'd|division=s'  => \$division, 
