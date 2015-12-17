@@ -22,6 +22,19 @@ package EnsEMBL::Web::Component::Info::HomePage;
 
 use strict;
 
+use previous qw(content);
+
+sub content {
+  my $self = shift;
+  my $html = $self->PREV::content(@_);
+  return $html =~ s/\/release-pre\//\/pre\//gmr; #/
+}
+
+sub _site_release {
+  my $self = shift;
+  return 'pre';
+}
+
 sub _variation_text {
   my $self         = shift;
   my $hub          = $self->hub;
@@ -29,7 +42,7 @@ sub _variation_text {
   my $species      = $hub->species;
   my $img_url      = $self->img_url;
   my $sample_data  = $species_defs->SAMPLE_DATA;
-  my $ensembl_version = $species_defs->SITE_RELEASE_VERSION;
+  my $ensembl_version = $self->_site_release;
   my $display_name    = $species_defs->SPECIES_SCIENTIFIC_NAME;
   my $html;
 
@@ -78,7 +91,7 @@ sub _variation_text {
       foreach my $format (qw/gvf vcf/){
         push(@links, sprintf('<a href="%s/release-%s/%s/%s/" class="nodeco _ht" title="Download (via FTP) all <em>%s</em> variants in %s format">%s</a>', $species_defs->ENSEMBL_FTP_URL, $ensembl_version, $format, lc $species, $display_name, uc $format,uc $format));
       }
-      push(@links, sprintf('<a href="%s/release-%s/vep/%s_vep_%s_%s.tar.gz" class="nodeco _ht" title="Download (via FTP) all <em>%s</em> variants in VEP format">VEP</a>', $species_defs->ENSEMBL_FTP_URL, $ensembl_version, lc $species, $ensembl_version, $species_defs->ASSEMBLY_NAME, $display_name));
+#      push(@links, sprintf('<a href="%s/release-%s/vep/%s_vep_%s_%s.tar.gz" class="nodeco _ht" title="Download (via FTP) all <em>%s</em> variants in VEP format">VEP</a>', $species_defs->ENSEMBL_FTP_URL, $ensembl_version, lc $species, $ensembl_version, $species_defs->ASSEMBLY_NAME, $display_name));
       my $links = join(" - ", @links);
       $html .= qq[<p><img src="${img_url}24/download.png" alt="" class="homepage-link" />Download all variants - $links</p>];
     }

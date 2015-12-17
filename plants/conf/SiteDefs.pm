@@ -6,9 +6,10 @@ sub update_conf {
 
     $SiteDefs::ENSEMBL_PORT       = 8110;
     $SiteDefs::ENSEMBL_SERVERNAME = 'pre.plants.ensembl.org';
-    $SiteDefs::SITE_NAME          = 'EnsemblPlants Pre';
+    $SiteDefs::SITE_NAME          = 'Ensembl Plants Pre';
+    $SiteDefs::ENSEMBL_SITETYPE          = 'Ensembl Plants Pre';
     $SiteDefs::ENSEMBL_BASE_URL   = 'http://pre.plants.ensembl.org';
-    $SiteDefs::SITE_FTP           = 'ftp://ftp.ensemblgenomes.org/pub/pre';
+    $SiteDefs::SITE_FTP           = 'ftp://ftp.ensemblgenomes.org/pub/plants/pre';
 
     $SiteDefs::ENSEMBL_DATASETS = [qw(
       Triticum_aestivum
