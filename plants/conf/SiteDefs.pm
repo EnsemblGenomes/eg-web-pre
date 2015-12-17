@@ -21,7 +21,7 @@ sub update_conf {
     $SiteDefs::ENSEMBL_BLAST_ENABLED  = 1;
     $SiteDefs::ENSEMBL_VEP_ENABLED    = 0;
     $SiteDefs::ENSEMBL_MART_ENABLED   = 0;
-    $SiteDefs::ENSEMBL_AC_ENABLED     = 1;
+    $SiteDefs::ENSEMBL_AC_ENABLED     = 0;
 }
 
 1;
