@@ -4,7 +4,7 @@ use strict;
 
 sub update_conf {
 
-    $SiteDefs::ENSEMBL_PORT       = 8009;
+    $SiteDefs::ENSEMBL_PORT       = 8110;
     $SiteDefs::ENSEMBL_SERVERNAME = 'pre.plants.ensembl.org';
     $SiteDefs::SITE_NAME          = 'EnsemblPlants Pre';
     $SiteDefs::ENSEMBL_BASE_URL   = 'http://pre.plants.ensembl.org';
