@@ -1,13 +1,13 @@
-package EG::Pre::SiteDefs;
+package EG::Pre::Plants::SiteDefs;
 use strict;
 
 
 sub update_conf {
 
     $SiteDefs::ENSEMBL_PORT       = 8009;
-    $SiteDefs::ENSEMBL_SERVERNAME = 'pre.ensemblgenomes.org';
-    $SiteDefs::SITE_NAME          = 'Ensembl Genomes Pre';
-    $SiteDefs::ENSEMBL_BASE_URL   = 'http://pre.ensemblgenomes.org';
+    $SiteDefs::ENSEMBL_SERVERNAME = 'pre.plants.ensembl.org';
+    $SiteDefs::SITE_NAME          = 'EnsemblPlants Pre';
+    $SiteDefs::ENSEMBL_BASE_URL   = 'http://pre.plants.ensembl.org';
     $SiteDefs::SITE_FTP           = 'ftp://ftp.ensemblgenomes.org/pub/pre';
 
     $SiteDefs::ENSEMBL_DATASETS = [qw(
