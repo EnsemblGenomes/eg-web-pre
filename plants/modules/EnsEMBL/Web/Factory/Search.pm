@@ -48,4 +48,66 @@ sub terms {
   return @list;
 }
 
+## PRE - also search seq region synonyms
+sub search_SEQUENCE {
+  my $self = shift;
+  my $dbh = $self->database('core');
+  return unless $dbh;  
+  
+  my $species = $self->species;
+  my $species_path = $self->species_path;
+  
+  $self->_fetch_results( 
+    [ 'core', 'Sequence',
+## PRE    
+      "select count(*) from seq_region sr left join seq_region_synonym srs using (seq_region_id) where sr.name [[COMP]] '[[KEY]] or srs.synonym [[COMP]] '[[KEY]]' group by sr.name",
+      "select sr.name, cs.name, 1, length, sr.seq_region_id from seq_region as sr left join seq_region_synonym srs using (seq_region_id), coord_system as cs where cs.coord_system_id = sr.coord_system_id and sr.name [[COMP]] '[[KEY]]' or srs.synonym [[COMP]] '[[KEY]]' group by sr.name" ],
+##
+    [ 'core', 'Sequence',
+      "select count(distinct misc_feature_id) from misc_attrib join attrib_type as at using(attrib_type_id) where at.code in ( 'name','clone_name','embl_acc','synonym','sanger_project') 
+       and value [[COMP]] '[[KEY]]'", # Eagle change, added at.code in count so that it matches the number of results in the actual search query below. 
+      "select ma.value, group_concat( distinct ms.name ), seq_region_start, seq_region_end, seq_region_id
+         from misc_set as ms, misc_feature_misc_set as mfms,
+              misc_feature as mf, misc_attrib as ma, 
+              attrib_type as at,
+              (
+                select distinct ma2.misc_feature_id
+                  from misc_attrib as ma2, attrib_type as at2
+                 where ma2.attrib_type_id = at2.attrib_type_id and
+                       at2.code in ('name','clone_name','embl_acc','synonym','sanger_project') and
+                       ma2.value [[COMP]] '[[KEY]]'
+              ) as tt
+        where ma.misc_feature_id   = mf.misc_feature_id and 
+              mfms.misc_feature_id = mf.misc_feature_id and
+              mfms.misc_set_id     = ms.misc_set_id     and
+              ma.misc_feature_id   = tt.misc_feature_id and
+              ma.attrib_type_id    = at.attrib_type_id  and
+              at.code in ('name','clone_name','embl_acc','synonym','sanger_project')
+        group by mf.misc_feature_id" ]
+  );
+
+
+  my $sa = $dbh->get_SliceAdaptor(); 
+
+  foreach ( @{$self->{_results}} ) {
+    my $KEY =  $_->[2] < 1e6 ? 'contigview' : 'cytoview';
+    $KEY = 'cytoview' if $self->species_defs->NO_SEQUENCE;
+    # The new link format is usually 'r=chr_name:start-end'
+    my $slice = $sa->fetch_by_seq_region_id($_->[4], $_->[2], $_->[3] ); 
+
+    $_ = {
+#      'URL'       => (lc($_->[1]) eq 'chromosome' && length($_->[0])<10) ? "$species_path/mapview?chr=$_->[0]" :
+#                        "$species_path/$KEY?$_->[3]=$_->[0]" ,
+      'URL'       => "$species_path/Location/View?r=" . $slice->seq_region_name . ":" . $slice->start . "-" . $slice->end,   # v58 format
+      'URL_extra' => [ 'Region overview', 'View region overview', "$species_path/Location/Overview?r=" . $slice->seq_region_name . ":" . $slice->start . "-" . $slice->end ],
+      'idx'       => 'Sequence',
+      'subtype'   => ucfirst( $_->[1] ),
+      'ID'        => $_->[0],
+      'desc'      => '',
+      'species'   => $species
+    };
+  }
+  $self->{'results'}{ 'Sequence' }  = [ $self->{_results}, $self->{_result_count} ]
+}
+
 1;
