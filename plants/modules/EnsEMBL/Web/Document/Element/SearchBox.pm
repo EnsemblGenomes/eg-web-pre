@@ -21,7 +21,7 @@ package EnsEMBL::Web::Document::Element::SearchBox;
 use strict;
 use previous qw(content);
 
-# limit search options
+## PRE - limit search options
 sub search_options {
   my $sitename = $_[0]->species_defs->SITE_NAME;
 
@@ -33,7 +33,7 @@ sub search_options {
   ];
 }
 
-# only show search box on a species page
+## PRE - only show search box on a species page
 sub content {
   my $self = shift;
   my $species = $self->species;

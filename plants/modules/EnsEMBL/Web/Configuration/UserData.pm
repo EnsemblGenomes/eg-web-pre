@@ -21,6 +21,8 @@ package EnsEMBL::Web::Configuration::UserData;
 use strict;
 use previous qw(modify_tree);
 
+## PRE - hide some tools 
+
 sub modify_tree {
   my $self = shift;
   $self->PREV::modify_tree(@_);

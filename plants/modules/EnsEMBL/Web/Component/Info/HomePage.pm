@@ -24,6 +24,8 @@ use strict;
 
 use previous qw(content);
 
+## PRE - most changes here relate to fixing up the FTP urls, or disabling VEP links
+
 sub content {
   my $self = shift;
   my $html = $self->PREV::content(@_);

@@ -16,7 +16,7 @@ limitations under the License.
 
 =cut
 
-## hide EG Plants non-standard assembly wranings
+## PRE - hide EG Plants non-standard assembly wranings
 package EnsEMBL::Web::Component::Location::Summary;
 
 use strict;
