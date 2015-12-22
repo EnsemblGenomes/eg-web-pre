@@ -21,6 +21,7 @@ package EnsEMBL::Web::Document::Element::ToolLinks;
 use strict;
 use warnings;
 
+## PRE - hide and alter some menus 
 sub links {
   my $self  = shift;
   my $hub   = $self->hub;

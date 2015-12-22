@@ -26,6 +26,8 @@ use EnsEMBL::Web::Document::Table;
 
 use base qw(EnsEMBL::Web::Document::HTML);
 
+## PRE - hide some tools
+
 sub render { 
   my $self        = shift;
   my $hub         = EnsEMBL::Web::Hub->new;

@@ -22,6 +22,8 @@ use strict;
 
 use base qw(EnsEMBL::Web::Document::HTML);
 
+## PRE - only show short summary of species
+
 sub render_species_list {
   my ($self, $fragment) = @_;
   my $hub           = $self->hub;
