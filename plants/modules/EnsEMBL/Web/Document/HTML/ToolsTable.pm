@@ -82,17 +82,17 @@ sub render {
   #   });
   # }
 
-  # ## ASSEMBLY CONVERTER
-  # if (!$is_bacteria) {
-  #   my $link = $hub->url({'species' => $sp, qw(type Tools action AssemblyConverter)});
-  #   $table->add_row({
-  #     'name' => sprintf('<b><a class="nodeco" href="%s">Assembly converter</a></b>', $link),
-  #     'desc' => "Map (liftover) your data's coordinates to the current assembly.",
-  #     'tool' => sprintf('<a href="%s" class="nodeco"><img src="%s16/tool.png" alt="Tool" title="Go to online tool" /></a>', $link, $img_url),
-  #     'code' => '',
-  #     'docs' => ''
-  #   });
-  # }
+  ## ASSEMBLY CONVERTER
+  if (!$is_bacteria) {
+    my $link = $hub->url({'species' => $sp, qw(type Tools action AssemblyConverter)});
+    $table->add_row({
+      'name' => sprintf('<b><a class="nodeco" href="%s">Assembly converter</a></b>', $link),
+      'desc' => "Map (liftover) your data's coordinates to the current assembly.",
+      'tool' => sprintf('<a href="%s" class="nodeco"><img src="%s16/tool.png" alt="Tool" title="Go to online tool" /></a>', $link, $img_url),
+      'code' => '',
+      'docs' => ''
+    });
+  }
 
 
   ## ID HISTORY CONVERTER
