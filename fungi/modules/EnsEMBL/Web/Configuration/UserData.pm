@@ -28,6 +28,8 @@ sub modify_tree {
   $self->PREV::modify_tree(@_);
 
   $self->delete_node('UploadVariations');
+  $self->delete_node('SelectFeatures');
+  $self->delete_node('SelectSlice');
 }
 
 
