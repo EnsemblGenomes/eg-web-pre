@@ -19,10 +19,10 @@ sub update_conf {
     $SiteDefs::ENSEMBL_SECONDARY_SPECIES = 'Triticum_aestivum';
 
     # Flag to enable/disable BLAST, VEP, Assembly Converter
-    $SiteDefs::ENSEMBL_BLAST_ENABLED  = 1;
+    $SiteDefs::ENSEMBL_BLAST_ENABLED  = 0;
     $SiteDefs::ENSEMBL_VEP_ENABLED    = 0;
     $SiteDefs::ENSEMBL_MART_ENABLED   = 0;
-    $SiteDefs::ENSEMBL_AC_ENABLED     = 1;
+    $SiteDefs::ENSEMBL_AC_ENABLED     = 0;
 }
 
 1;
