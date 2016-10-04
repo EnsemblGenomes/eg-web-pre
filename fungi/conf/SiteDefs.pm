@@ -13,6 +13,7 @@ sub update_conf {
 
     $SiteDefs::ENSEMBL_DATASETS = [qw(
       Fusarium_culmorum 
+      Fusarium_graminearum
     )];
 
     $SiteDefs::ENSEMBL_PRIMARY_SPECIES   = 'Fusarium_culmorum';
