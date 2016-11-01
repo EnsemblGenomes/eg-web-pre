@@ -26,6 +26,8 @@ use previous qw(content);
 
 ## PRE - most changes here relate to fixing up the FTP urls, or disabling VEP links
 
+
+#Do we still need this method now that _assembly_text and _genebuild_text methods are overwritten here and that only those methods have links to FTP site 
 sub content {
   my $self = shift;
   my $html = $self->PREV::content(@_);
@@ -36,6 +38,82 @@ sub _site_release {
   my $self = shift;
   return 'pre';
 }
+
+
+sub _assembly_text {
+  my $self             = shift;
+  my $hub              = $self->hub;
+  my $species_defs     = $hub->species_defs;
+  my $species          = $hub->species;
+  my $name             = $species_defs->SPECIES_COMMON_NAME;
+  my $img_url          = $self->img_url;
+  my $sample_data      = $species_defs->SAMPLE_DATA;
+  my $ensembl_version  = $self->_site_release;
+  my $current_assembly = $species_defs->ASSEMBLY_NAME;
+  my $accession        = $species_defs->ASSEMBLY_ACCESSION;
+  my $source           = $species_defs->ASSEMBLY_ACCESSION_SOURCE || 'NCBI';
+  my $source_type      = $species_defs->ASSEMBLY_ACCESSION_TYPE;
+ #my %archive          = %{$species_defs->get_config($species, 'ENSEMBL_ARCHIVES') || {}};
+  my %assemblies       = %{$species_defs->get_config($species, 'ASSEMBLIES') || {}};
+  my $previous         = $current_assembly;
+
+  my $html = '<div class="homepage-icon">';
+
+  if (@{$species_defs->ENSEMBL_CHROMOSOMES || []}) {
+    $html .= qq(<a class="nodeco _ht" href="/$species/Location/Genome" title="Go to $name karyotype"><img src="${img_url}96/karyotype.png" class="bordered" /><span>View karyotype</span></a>);
+  }
+
+  my $region_text = $sample_data->{'LOCATION_TEXT'};
+  my $region_url  = $species_defs->species_path . '/Location/View?r=' . $sample_data->{'LOCATION_PARAM'};
+
+  $html .= qq(<a class="nodeco _ht" href="$region_url" title="Go to $region_text"><img src="${img_url}96/region.png" class="bordered" /><span>Example region</span></a>);
+  $html .= '</div>'; #homepage-icon
+
+  if ($sample_data->{POLYPLOID_REGION}) { 
+    my $url  = $species_defs->species_path . '/Location/MultiPolyploid?r=' . $sample_data->{'POLYPLOID_REGION'};
+    $html .= qq(
+      <div class="homepage-icon" style="padding-top:97px;">
+        <a class="nodeco _ht" href="$url" title="Go to $sample_data->{POLYPLOID_REGION}"><img src="${img_url}96/region_polyploid.png" class="bordered" /><span>Polyploid example</span></a>
+      </div>
+    );
+  }
+
+  my $assembly = $current_assembly;
+  if ($accession) {
+    $assembly = $hub->get_ExtURL_link($current_assembly, 'ENA', $accession);
+  }
+  $html .= "<h2>Genome assembly: $assembly</h2>";
+  $html .= qq(<p><a href="/$species/Info/Annotation/#assembly" class="nodeco"><img src="${img_url}24/info.png" alt="" class="homepage-link" />More information and statistics</a></p>);
+
+  # Link to FTP site
+  if ($species_defs->ENSEMBL_FTP_URL) {
+    my $ftp_url;
+    if ($species_defs->SPECIES_DATASET ne $species) {
+      $ftp_url = sprintf '%s/release-%s/fasta/%s_collection/%s/dna/', $species_defs->ENSEMBL_FTP_URL, $ensembl_version, lc $species_defs->SPECIES_DATASET, lc $species;
+    }
+    else {
+      $ftp_url = sprintf '%s/release-%s/fasta/%s/dna/', $species_defs->ENSEMBL_FTP_URL, $ensembl_version, lc $species;
+    }
+##
+#PRE - No FTP download links on species page
+##
+  #  $html .= qq(<p><a href="$ftp_url" class="nodeco"><img src="${img_url}24/download.png" alt="" class="homepage-link" />Download DNA sequence</a> (FASTA)</p>);
+  }
+
+  # Link to assembly mapper
+  if ($species_defs->ENSEMBL_AC_ENABLED and $species_defs->ASSEMBLY_CONVERTER_FILES) {
+    $html .= sprintf('<a href="%s" class="nodeco"><img src="%s24/tool.png" class="homepage-link" />Convert your data to %s coordinates</a></p>', $hub->url({'type' => 'Tools', 'action' => 'AssemblyConverter'}), $img_url, $current_assembly);
+  }
+  
+  $html .= sprintf '<p><a href="%s" class="modal_link nodeco" rel="modal_user_data">%sDisplay your data in %s</a></p>',
+    $hub->url({ type => 'UserData', action => 'SelectFile', __clear => 1 }), qq|<img src="${img_url}24/page-user.png" class="homepage-link" />|, $species_defs->ENSEMBL_SITETYPE;
+
+  return $html;
+}
+
+
+
+
 
 sub _variation_text {
   my $self         = shift;
@@ -145,7 +223,10 @@ sub _genebuild_text {
     my $dataset = $species_defs->SPECIES_DATASET;
     my $fasta_url = $hub->get_ExtURL('SPECIES_FTP_URL',{GENOMIC_UNIT=>$species_defs->GENOMIC_UNIT,VERSION=>$ensembl_version, FORMAT=>'fasta', SPECIES=> ($dataset ne $species) ? lc($dataset) . "_collection/" . lc $species : lc $species},{class=>'nodeco'});
     my $gff3_url  = $hub->get_ExtURL('SPECIES_FTP_URL',{GENOMIC_UNIT=>$species_defs->GENOMIC_UNIT,VERSION=>$ensembl_version, FORMAT=>'gff3', SPECIES=> ($dataset ne $species) ? lc($dataset) . "_collection/" . lc $species : lc $species},{class=>'nodeco'});
-    $html .= qq[<p><img src="${img_url}24/download.png" alt="" class="homepage-link" />Download genes, cDNAs, ncRNA, proteins - <span class="center"><a href="$fasta_url" class="nodeco">FASTA</a><!-- - <a href="$gff3_url" class="nodeco">GFF3</a>--></span></p>];
+##
+#PRE - No FTP download links on species page
+##
+#    $html .= qq[<p><img src="${img_url}24/download.png" alt="" class="homepage-link" />Download genes, cDNAs, ncRNA, proteins - <span class="center"><a href="$fasta_url" class="nodeco">FASTA</a><!-- - <a href="$gff3_url" class="nodeco">GFF3</a>--></span></p>];
   }
 
 ## PRE - no id mapper 
