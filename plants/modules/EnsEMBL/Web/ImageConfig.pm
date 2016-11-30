@@ -52,8 +52,7 @@ sub _add_file_format_track {
     }
   }
  
-  $self->generic_add($menu, undef, $args{'key'}, {}, {
-    display     => 'off',
+  $self->_add_track($menu, undef, $args{'key'}, {}, {
     strand      => 'f',
     format      => $args{'format'},
     glyphset    => $type,
