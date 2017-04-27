@@ -13,6 +13,7 @@ sub update_conf {
 
     $SiteDefs::ENSEMBL_DATASETS = [qw(
       Triticum_aestivum
+      Hordeum_vulgare
     )];
 
     $SiteDefs::ENSEMBL_PRIMARY_SPECIES   = 'Triticum_aestivum';
