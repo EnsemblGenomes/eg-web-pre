@@ -25,8 +25,7 @@ sub update_conf {
     $SiteDefs::ENSEMBL_MART_ENABLED   = 0;
     $SiteDefs::ENSEMBL_AC_ENABLED     = 0;
 
-    $SiteDefs::ENSEMBL_LOGDIR  = '/nfs/public/rw/ensembl/shared-storage/ensembl-logs/pre-fungi';
-    $SiteDefs::ENSEMBL_TMP_DIR = '/nfs/public/rw/ensembl/shared-storage/ensembl-tmp-dirs/pre-fungi';
+    $SiteDefs::LOGS_DIR            = 'pre-fungi';
 }
 
 1;
