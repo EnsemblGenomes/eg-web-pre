@@ -12,12 +12,12 @@ sub update_conf {
     $SiteDefs::SITE_FTP           = 'ftp://ftp.ensemblgenomes.org/pub/fungi/pre';
 
     $SiteDefs::ENSEMBL_DATASETS = [qw(
-      Fusarium_culmorum 
       Fusarium_graminearum
+      Beauveria_bassiana 
     )];
 
-    $SiteDefs::ENSEMBL_PRIMARY_SPECIES   = 'Fusarium_culmorum';
-    $SiteDefs::ENSEMBL_SECONDARY_SPECIES = 'Fusarium_culmorum';
+    $SiteDefs::ENSEMBL_PRIMARY_SPECIES   = 'Fusarium_graminearum';
+    $SiteDefs::ENSEMBL_SECONDARY_SPECIES = 'Beauveria_bassiana';
 
     # Flag to enable/disable BLAST, VEP, Assembly Converter
     $SiteDefs::ENSEMBL_BLAST_ENABLED  = 0;
